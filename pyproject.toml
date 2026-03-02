@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "optical-diffraction"
+dynamic = ["version"]
+description = "Vector diffraction theory and Monte Carlo scattering for optical beams"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Roland Albert Romero", email = "romero.rolandalbert@gmail.com"},
+]
+keywords = ["optics", "diffraction", "richards-wolf", "microscopy"]
+
+# Core dependencies - keeping minimal for now
+dependencies = [
+    "numpy>=1.20.0",
+    "scipy>=1.7.0",
+    "matplotlib>=3.5.0",
+]
+
+# Optional dependencies for development
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=3.0",
+]
+
+# Package discovery
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# Dynamic version from _version.py
+[tool.setuptools.dynamic]
+version = {attr = "optical_diffraction._version.__version__"}
+
+# Pytest configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
