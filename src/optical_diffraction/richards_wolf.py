@@ -232,9 +232,9 @@ class RichardsWolfSimulator:
                 Ex_flat[i] = 0
                 Ey_flat[i] = -1j * (I0 + I2)
                 Ez_flat[i] = 0
-            else:  # circular
+            else:  # left circular: (x̂ + iŷ)/√2
                 Ex_flat[i] = -1j * (I0 - I2) / np.sqrt(2)
-                Ey_flat[i] = -1j * (I0 + I2) / np.sqrt(2)
+                Ey_flat[i] = (I0 + I2) / np.sqrt(2)
                 Ez_flat[i] = -2 * I1 / np.sqrt(2)
 
         # Reshape to match input

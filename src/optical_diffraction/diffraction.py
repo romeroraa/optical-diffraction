@@ -52,16 +52,10 @@ def _I0_integrand(theta, u_val, v_val, sin_alpha, sin2_alpha):
     apodization = np.sqrt(cos_theta)
     geometric = sin_theta * (1 + cos_theta)
     bessel_arg = v_val * sin_theta / sin_alpha
-    
-    # Handle large arguments in Bessel function
-    if abs(bessel_arg) > 100:
-        bessel = 0.0  # Bessel function oscillates and averages to ~0 for large args
-    else:
-        bessel = jv(0, bessel_arg)
-        
+    bessel = jv(0, bessel_arg)
     phase_arg = u_val * cos_theta / sin2_alpha
     phase = np.exp(1j * phase_arg)
-    
+
     return apodization * geometric * bessel * phase
 
 
@@ -69,23 +63,17 @@ def _I1_integrand(theta, u_val, v_val, sin_alpha, sin2_alpha):
     """I1 integrand function with robust handling."""
     cos_theta = np.cos(theta)
     sin_theta = np.sin(theta)
-    
+
     if abs(sin_theta) < 1e-15:
         return 0.0 + 0.0j
-        
+
     apodization = np.sqrt(cos_theta)
     geometric = sin_theta**2
     bessel_arg = v_val * sin_theta / sin_alpha
-    
-    # Handle large arguments in Bessel function
-    if abs(bessel_arg) > 100:
-        bessel = 0.0
-    else:
-        bessel = jv(1, bessel_arg)
-        
+    bessel = jv(1, bessel_arg)
     phase_arg = u_val * cos_theta / sin2_alpha
     phase = np.exp(1j * phase_arg)
-    
+
     return apodization * geometric * bessel * phase
 
 
@@ -93,19 +81,14 @@ def _I2_integrand(theta, u_val, v_val, sin_alpha, sin2_alpha):
     """I2 integrand function with robust handling."""
     cos_theta = np.cos(theta)
     sin_theta = np.sin(theta)
-    
+
     if abs(sin_theta) < 1e-15:
         return 0.0 + 0.0j
-        
+
     apodization = np.sqrt(cos_theta)
     geometric = sin_theta * (1 - cos_theta)
     bessel_arg = v_val * sin_theta / sin_alpha
-    
-    # Handle large arguments in Bessel function
-    if abs(bessel_arg) > 100:
-        bessel = 0.0
-    else:
-        bessel = jv(2, bessel_arg)
+    bessel = jv(2, bessel_arg)
         
     phase_arg = u_val * cos_theta / sin2_alpha
     phase = np.exp(1j * phase_arg)
@@ -463,13 +446,13 @@ def calculate_field_Ex(
     phi: np.ndarray = 0.0
 ) -> np.ndarray:
     """
-    Calculate Ex field component from Romallosa equation (2).
-    
-    Ex(P) = -j(I₀ - I₂ cos φ)
-    
-    For linear x-polarization: φ = 0, so cos φ = 1
+    Calculate Ex field component from Richards-Wolf theory.
+
+    Ex(P) = -j(I₀ - I₂ cos 2φ)
+
+    For linear x-polarization at φ=0: cos(2φ)=1, so Ex = -j(I₀ - I₂)
     """
-    return -1j * (I0 - I2 * np.cos(phi))
+    return -1j * (I0 - I2 * np.cos(2 * phi))
 
 
 def calculate_field_Ey(
@@ -477,13 +460,13 @@ def calculate_field_Ey(
     phi: np.ndarray = 0.0
 ) -> np.ndarray:
     """
-    Calculate Ey field component from Romallosa equation (3).
-    
-    Ey(P) = -jI₂ sin φ
-    
-    For linear x-polarization: φ = 0, so sin φ = 0 → Ey = 0
+    Calculate Ey field component from Richards-Wolf theory.
+
+    Ey(P) = -jI₂ sin 2φ
+
+    For linear x-polarization at φ=0: sin(2φ)=0, so Ey = 0
     """
-    return -1j * I2 * np.sin(phi)
+    return -1j * I2 * np.sin(2 * phi)
 
 
 def calculate_field_Ez(

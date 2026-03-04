@@ -507,11 +507,11 @@ def pulsed_richards_wolf_diffraction(
                 intensity_z_total += intensity_z_contrib
     
     if addition_method == 'incoherent':
-        # Convert back to effective field amplitudes
-        # Note: Phase information is lost in intensity integration
-        Ex_total = np.sqrt(intensity_x_total + 0j)  # Make complex
-        Ey_total = np.sqrt(intensity_y_total + 0j) 
-        Ez_total = np.sqrt(intensity_z_total + 0j)
+        # Incoherent sum produces real intensities; return as real arrays.
+        # Callers should use these directly as intensities, not as field amplitudes.
+        Ex_total = intensity_x_total.astype(float)
+        Ey_total = intensity_y_total.astype(float)
+        Ez_total = intensity_z_total.astype(float)
     
     return Ex_total, Ey_total, Ez_total
 

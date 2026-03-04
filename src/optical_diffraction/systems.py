@@ -55,8 +55,7 @@ class OpticalSystem:
         
         # Store primary parameters
         self.wavelength_vacuum = float(wavelength)  # Store vacuum wavelength
-        self.wavelength = self.wavelength_vacuum
-        # self.wavelength = self.wavelength_vacuum / refractive_index  # Medium wavelength
+        self.wavelength = self.wavelength_vacuum / refractive_index  # Medium wavelength
         self.NA = float(numerical_aperture)
         self.n = float(refractive_index)
         self.name = name or f"λ={wavelength*1e9:.0f}nm, NA={numerical_aperture:.2f}, n={refractive_index:.2f}"

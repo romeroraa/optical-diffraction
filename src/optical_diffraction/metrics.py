@@ -109,10 +109,10 @@ def nrmse(sr, se):
     float
         Normalized RMSE
     """
-    top = 0
-    for i in range(len(sr)):
-        top += (sr[i] - se[i])**2
-    return (top / len(sr))**0.5 / (np.max(sr) - np.min(sr))
+    denom = np.max(sr) - np.min(sr)
+    if denom == 0:
+        return 0.0
+    return np.sqrt(np.mean((np.asarray(sr) - np.asarray(se))**2)) / denom
 
 
 def rmse(observed, reference):

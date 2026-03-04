@@ -162,7 +162,7 @@ class FocusedGaussianBeamTheory:
         ws = self.beam_radius(z=self.z_lens)
         alpha = (self.aperture / 2) / ws
         P = k * ws**2 / self.f
-        Z = (z - self.z_f) / self.f
+        Z = (z - self.z_lens) / self.f
 
         eps = self.epsilon(z=self.z_lens)
 
